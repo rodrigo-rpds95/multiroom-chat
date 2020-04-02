@@ -1,0 +1,455 @@
+doctype html
+html(lang="pt-br")
+    head
+        meta(charset="UTF-8")
+        title Painel Admin
+        link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous')
+        link(rel='stylesheet' href='/css/admin.css')
+    body
+
+        header
+            div.container
+                h1 ADM Chat
+
+        main.container
+            div(class="abasDet",  role="tabpanel")
+                ul(class="nav nav-tabs tab-prod-det",  role="tablist")
+                    li(class="active" role="presentation")
+                        a(role="tab" data-toggle="tab" aria-controls="aba1" href="#aba1" aria-expanded="true") CATEGORIA
+                    li(role="presentation") 
+                        a(role="tab" data-toggle="tab" aria-controls="aba2" href="#aba2" aria-expanded="false") SALA
+
+                div.tab-content
+                    div(id="aba1" class="tab-pane active" role="tabpanel")
+                        //- p.roomTitle Sala Selecionada                    
+                        form.row.formCMSCustom#formCategory
+                            div.form-group.col-md-6
+                                input(type="hidden" class="categoryCod" value="0")
+                                label(for="exampleInputEmail1") Category Name
+                                br
+                                input(placeholder="Category Name" class="form-control" class="categoryName")
+                                
+                            div.form-group.col-md-6
+                                p status 
+                                label.radio-inline
+                                    input(type="radio" name="categoryStatus" class="categoryStatus" value="1" checked) 
+                                    | Enabled
+                                label.radio-inline
+                                    input(type="radio" name="categoryStatus" class="categoryStatus" value="0") 
+                                    | Disabled
+
+                            div.col-xs-12       
+                                button(class="btn btn-success" type="submit" class="saveCategory") Save
+                                button(class="btn btn-warning" type="button" class="cleanCategory") Clean
+
+                        hr
+
+                        table.table.table-bordered.tableCMSCustom#tableCategory 
+                            thead
+                                tr
+                                    th Category Name
+                                    th Category URL
+                                    th Status 
+                                    th Action
+                            tbody
+
+                    div(id="aba2" class="tab-pane" role="tabpanel")
+                        form.row.formCMSCustom#formRoom
+                            div.form-group.col-md-6
+                                input(type="hidden" class="roomCod" value="0")
+                                label(for="exampleInputEmail1") Room Name
+                                br
+                                input(placeholder="Room Name" class="form-control" class="roomName")
+                            
+                            div.form-group.col-md-2
+                                label(for="exampleInputEmail1") Qtd. Room
+                                br
+                                input(type="number" placeholder="Qtd. Room" class="form-control roomQtd")
+                            
+                            div.form-group.col-md-4
+                                label(for="exampleInputEmail1") Category
+                                br
+                                select(class="form-control" name="category")
+                                
+                            div.form-group.col-xs-12                              
+                                p status 
+                                label.radio-inline
+                                    input(type="radio" name="roomStatus" class="roomStatus" value="1" checked) 
+                                    | Enabled
+                                label.radio-inline
+                                    input(type="radio" name="roomStatus" class="roomStatus" value="0") 
+                                    | Disabled
+                                    
+                            div.col-xs-12       
+                                button(class="btn btn-success saveRoom" type="submit") Save
+                                button(class="btn btn-success cleanRoom" type="button") Clean
+
+                        hr
+
+                        table.table.table-bordered.tableCMSCustom#tableRoom
+                            thead
+                                tr
+                                    th Room Name
+                                    th Category Name
+                                    th Qtd.
+                                    th Status 
+                                    th Action
+                            tbody
+
+        script(src='/js/jquery.min.js')
+        script(src='/js/bootstrap.min.js')
+
+        script.
+            (function(){
+                'user strict';
+
+                class Chat {
+
+                    constructor(){                       
+                        this.graphql_url = 'http://localhost:8080/graphql';
+                        this.readCategory();
+                        this.readRoom();
+                        this.initEvents();
+                    }
+
+                    initEvents(){
+
+                        document.querySelector('.cleanCategory').addEventListener('click', this.cleanCategory);             
+                        document.querySelector('.saveCategory').addEventListener('click', (event) => this.saveCategory(event, this));  
+                        
+                        document.querySelector('.cleanRoom').addEventListener('click', this.cleanRoom); 
+                        document.querySelector('.saveRoom').addEventListener('click', (event) => this.saveRoom(event, this)); 
+                    }
+
+                    readCategory(){
+                        const query = {
+                            query: `{
+                                categories {
+                                    id,
+                                    name,
+                                    url,
+                                    status
+                                }
+                            }`
+                        };
+                        
+                        const http = new XMLHttpRequest();
+                        const bodyFormCategory = document.querySelector('#tableCategory tbody');
+                        const refClass = this;                     
+                                
+                        http.open('POST', this.graphql_url, true);
+                        http.setRequestHeader('Content-Type', 'application/json');
+                        http.send(JSON.stringify(query));
+
+                        http.onreadystatechange = function() {
+
+                            if(this.readyState === 4 && this.status === 200) {
+                                const objJSON = JSON.parse(http.responseText);
+                                const arrJSON = objJSON.data.categories;
+                                const formRoomSelect = document.querySelector('#formRoom select');                               
+                                const opTemp = []; 
+                                let i = true;
+                                let txt = '';
+                                let optionsRoom = '';
+                                
+                                for(let i=0; i<arrJSON.length; i++) {
+
+                                    //Criar options apenas com categorias de nomes diferentes
+                                    if(!opTemp.includes(arrJSON[i].name)){                                            
+                                        optionsRoom += `<option value="${arrJSON[i].id}">${arrJSON[i].name}</option>`;
+                                        opTemp.push(arrJSON[i].name);
+                                    }
+
+                                    txt += `
+                                        <tr data-row-id="${arrJSON[i].id}">
+                                            <td data-col-name>${arrJSON[i].name}</td>
+                                            <td data-col-url>${arrJSON[i].url}</td>
+                                            <td data-col-status>${arrJSON[i].status === 1 ? 'Ativado' : 'Desativado'}</td>
+                                            <td data-buttons>
+                                                <button data-btn-select="${arrJSON[i].id}" class="btn btn-info">
+                                                    Edit
+                                                </button>
+                                                <button data-btn-delete="${arrJSON[i].id}" class="btn btn-danger">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }
+
+                                formRoomSelect.innerHTML = optionsRoom;     
+                                bodyFormCategory.innerHTML = txt;
+
+                                let tdButtons = document.querySelectorAll("#tableCategory td[data-buttons] button");
+                                
+                                // add event to edit and delete button
+                                tdButtons.forEach(function(btn) {
+                                    (i) ? btn.addEventListener("click", refClass.selectCategory) : btn.addEventListener("click", (event) => refClass.deleteCategory(event, refClass));
+                                    i = !i;
+                                });  
+                            }
+                        }                        
+                    }
+
+                    readRoom(){
+                        const query = {
+                            query: `{
+                                rooms {
+                                    id,
+                                    name,
+                                    quantity,
+                                    status,
+                                    category {
+                                        id, name
+                                    }
+                                }
+                            }`
+                        };
+
+                        const http = new XMLHttpRequest();
+                        const bodyTableRoom = document.querySelector('#tableRoom tbody');
+                        let i = true;
+                        const refClass = this;
+            
+
+                        http.open('POST', this.graphql_url, true);
+                        http.setRequestHeader('Content-Type', 'application/json');
+                        http.send(JSON.stringify(query));
+
+                        http.onreadystatechange = function() {
+
+                            if(this.readyState === 4 && this.status === 200) {
+                                const objJSON = JSON.parse(http.responseText);
+                                const arrJSON = objJSON.data.rooms;
+
+                                let txt = '';
+                                
+                                for(let i=0; i<arrJSON.length; i++) {
+                                    
+                                    txt += `
+                                        <tr data-row-id="${arrJSON[i].id}">
+                                            <td data-col-name>${arrJSON[i].name}</td>
+                                            <td data-col-category-name>#<span>${arrJSON[i].category.id}</span> - ${arrJSON[i].category.name}</td>
+                                            <td data-col-quantity>${arrJSON[i].quantity}</td>
+                                            <td data-col-status>${arrJSON[i].status === 1 ? 'Ativado' : 'Desativado'}</td>
+                                            <td data-buttons>
+                                                <button data-btn-select="${arrJSON[i].id}" class="btn btn-info">
+                                                    Edit
+                                                </button>
+                                                <button data-btn-delete="${arrJSON[i].id}" class="btn btn-danger">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }
+                                
+                                bodyTableRoom.innerHTML = txt;
+
+                                let tdButtons = document.querySelectorAll("#tableRoom td[data-buttons] button");
+                                
+                                // add event to edit and delete button
+                                tdButtons.forEach(function(btn) {
+                                    (i) ? btn.addEventListener("click", refClass.selectRoom) : btn.addEventListener("click", (event) => refClass.deleteRoom(event, refClass));
+                                    i = !i;
+                                }); 
+                            }
+                        }
+                    }
+
+                    saveCategory(event, refClass){
+
+                        event.preventDefault();
+
+                        const categoryCod = document.querySelector('.categoryCod').value;
+                        const categoryName = document.querySelector('.categoryName').value;
+                        const categoryStatus = document.querySelector('.categoryStatus:checked').value;
+                        const categoryURL = categoryName.toLowerCase();
+                        let query = '';                        
+
+                        if(categoryCod > 0){
+
+                            query = {
+                                query: `mutation {
+                                    updateCategory(filter: ${categoryCod}, input: {
+                                        name: "${categoryName}",
+                                        status: ${categoryStatus},
+                                    })
+                                }`
+                            };
+
+                        }else{
+
+                            query = {
+                                query: `mutation {
+                                    saveCategory(input: {
+                                        name: "${categoryName}",
+                                        url: "${categoryURL}",
+                                        status: ${categoryStatus},
+                                    })
+                                }`
+                            };                            
+                        }
+
+                        const http = new XMLHttpRequest();
+
+                        http.open('POST', 'http://localhost:8080/graphql', true);
+                        http.setRequestHeader('Content-Type', 'application/json');
+                        http.send(JSON.stringify(query));
+
+                        http.onreadystatechange = function() {
+                            if(this.readyState === 4 && this.status === 200) {
+                                refClass.cleanCategory();
+                                refClass.readCategory();                                
+                            }
+                        }
+                    }
+
+                    saveRoom(event, refClass){
+
+                        event.preventDefault();
+
+                        const roomCod = document.querySelector('.roomCod').value;
+                        const roomName = document.querySelector('.roomName').value;
+                        const roomQuantity = document.querySelector('.roomQtd').value;
+                        const roomStatus = document.querySelector('.roomStatus:checked').value;
+                        const categoryId = document.querySelector('#formRoom select').value;
+                        const roomURL = roomName.toLowerCase();
+                        let query = ''; 
+
+                        if(roomCod > 0){
+
+                            query = {
+                                query: `mutation {
+                                    updateRoom(filter: ${roomCod}, input: {
+                                        name: "${roomName}",
+                                        url: "${roomURL}",
+                                        quantity: ${roomQuantity},
+                                        status: ${roomStatus},
+                                        category_id: ${categoryId},
+                                    })
+                                }`
+                            };
+
+                        }else{
+
+                            query = {
+                                query: `mutation {
+                                    saveRoom(input: {
+                                        name: "${roomName}",
+                                        url: "${roomURL}",
+                                        quantity: ${roomQuantity},
+                                        status: ${roomStatus},
+                                        category_id: ${categoryId},
+                                    })
+                                }`
+                            };                            
+                        }
+
+                        const http = new XMLHttpRequest();
+
+                        http.open('POST', 'http://localhost:8080/graphql', true);
+                        http.setRequestHeader('Content-Type', 'application/json');
+                        http.send(JSON.stringify(query));
+
+                        http.onreadystatechange = function() {
+                            if(this.readyState === 4 && this.status === 200) {
+                                refClass.cleanRoom();
+                                refClass.readRoom();
+                            }
+                        }
+                    }        
+
+                    selectCategory(el){
+                        const id = el.target.getAttribute('data-btn-select');
+                        const row = document.querySelector(`#tableCategory tr[data-row-id="${id}"]`);
+                        const categoryName = row.querySelector('td[data-col-name]').textContent;
+                        const categoryStatus = row.querySelector('td[data-col-status]').textContent;
+                        const checkStatus = document.querySelectorAll('#formCategory .categoryStatus');
+                        
+                        document.querySelector('#formCategory .categoryName').value = categoryName;
+                        document.querySelector('#formCategory .categoryCod').value = id;
+                        (categoryStatus.toLowerCase() === 'ativado') ? checkStatus[0].checked = true : checkStatus[1].checked = true;
+                    }
+                    
+                    selectRoom(el){
+
+                        const id = el.target.getAttribute('data-btn-select');
+                        const row = document.querySelector(`#tableRoom tr[data-row-id="${id}"]`);
+                        const roomName = row.querySelector('td[data-col-name]').textContent;
+                        const roomCategoryId = row.querySelector('td[data-col-category-name] span').textContent;
+                        const roomQtd = row.querySelector('td[data-col-quantity]').textContent;
+                        const roomStatus = row.querySelector('td[data-col-status]').textContent;
+                        const checkStatus = document.querySelectorAll('#formRoom .roomStatus');
+
+                        document.querySelector('#formRoom .roomName').value = roomName;
+                        document.querySelector('#formRoom .roomQtd').value = roomQtd;
+                        document.querySelector('#formRoom .roomCod').value = id;
+                        document.querySelector('#formRoom select').value = roomCategoryId;
+                        
+                        (roomStatus.toLowerCase() === 'ativado') ? checkStatus[0].checked = true : checkStatus[1].checked = true;
+                    }
+
+                    deleteCategory(el, refClass){
+                        const id = el.target.getAttribute('data-btn-delete');
+                        const query = {
+                            query: `mutation {
+                                deleteCategory(id: ${id}){name}
+                            }`
+                        };
+
+                        const http = new XMLHttpRequest();
+
+                        http.open('POST', 'http://localhost:8080/graphql', true);
+                        http.setRequestHeader('Content-Type', 'application/json');
+                        http.send(JSON.stringify(query));
+
+                        http.onreadystatechange = function() {
+                            if(this.readyState === 4 && this.status === 200) {
+                                const objJSON = JSON.parse(http.responseText);
+                               refClass.readCategory();
+                            }
+                        }
+                    }
+
+                    deleteRoom(el, refClass){
+
+                        const id = el.target.getAttribute('data-btn-delete');
+                        const query = {
+                            query: `mutation {
+                                deleteRoom(id: ${id}){name}
+                            }`
+                        };
+
+                        const http = new XMLHttpRequest();
+
+                        http.open('POST', 'http://localhost:8080/graphql', true);
+                        http.setRequestHeader('Content-Type', 'application/json');
+                        http.send(JSON.stringify(query));
+
+                        http.onreadystatechange = function() {
+                            if(this.readyState === 4 && this.status === 200) {
+                                const objJSON = JSON.parse(http.responseText);
+                                refClass.readRoom();
+                            }
+                        }                        
+                    }
+
+                    cleanCategory(){
+                        document.querySelector('.categoryName').value = '';
+                        document.querySelector('.categoryCod').value = 0;
+                        document.querySelector('.categoryStatus').checked = true;
+                    }
+
+                    cleanRoom(){
+                        document.querySelector('.roomName').value = '';
+                        document.querySelector('.roomCod').value = 0;
+                        document.querySelector('.roomQtd').value = 0;
+                        document.querySelector('.roomStatus').checked = true;
+                        document.querySelector('#formRoom select').selectedIndex = "0";
+                    }
+                }
+
+                new Chat();             
+
+            })();

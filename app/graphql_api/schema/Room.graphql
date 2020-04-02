@@ -1,0 +1,37 @@
+type Room {
+    id: Int
+    url: String
+    name: String
+    quantity: Int
+    status: Int
+    category: Category
+}
+
+
+input RoomInput {
+    id: Int
+    url: String
+    name: String
+    quantity: Int
+    status: Int
+    category_id: Int
+}
+
+type Category {
+    id: Int
+    url: String
+    name: String    
+    status: Int
+}
+
+input CategoryInput {
+    id: Int
+    url: String
+    name: String    
+    status: Int
+}
+
+# enum Status {
+#     ENABLED
+#     DISABLED
+# }

@@ -1,0 +1,22 @@
+h1 { font-size: 22px; margin: 30px 0;}
+
+/* tabs */
+.abasDet {
+    .nav-tabs > li { 
+        margin-bottom: 0;
+    }
+}
+
+.tab-content { 
+    background: #fff; 
+    border: 1px solid #e5e5e5; 
+    margin-top: -1px; 
+    padding: 30px;
+}
+
+.formCMSCustom p { font-weight: 700;}
+
+.tab-prod-det { overflow-y: hidden; white-space: nowrap; border: none;}
+.tableCMSCustom button, .formCMSCustom button { margin: 0 5px;}
+
+.roomTitle {  font-size: 18px; margin: 0 0 30px; color: #f00;}

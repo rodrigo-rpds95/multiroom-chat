@@ -1,0 +1,25 @@
+{
+  "name": "batepapo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch app/public/scss:app/public/css --style compressed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.9.16",
+    "body-parser": "^1.19.0",
+    "consign": "^0.1.6",
+    "express": "^4.17.1",
+    "express-validator": "^6.3.0",
+    "graphql": "^14.5.8",
+    "graphql-import": "^0.7.1",
+    "knex": "^0.20.8",
+    "mysql": "^2.17.1",
+    "pug": "^2.0.4",
+    "socket.io": "^2.3.0"
+  }
+}

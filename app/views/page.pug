@@ -1,0 +1,17 @@
+doctype html
+html(lang="pt-br")
+    head
+        meta(charset="UTF-8")
+        title= page_name
+        link(rel='stylesheet' href='/css/style.css')
+    body
+        h1= page_name
+
+        if validacao.length
+            ul
+                each val, index in validacao
+                    li= val.msg
+
+        form(action=url, method='post')
+            input(type="text" name="nick")
+            input(type="submit" value="Entrar")

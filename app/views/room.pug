@@ -1,0 +1,132 @@
+doctype html
+html(lang="pt-br")
+    head
+        meta(charset="UTF-8")
+        title Cadastro de clientes
+        link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7' crossorigin='anonymous')
+        link(rel='stylesheet' href='/css/style.css')
+
+    body
+
+        header.top
+            div.container
+                p Multiroom chat
+
+        main.container.boxRoom  
+
+            h1= room_name           
+
+            div.row
+                section.col-md-9.boxChat                             
+                    div.dialogos
+
+                aside.col-md-3.boxUsers
+                    h2 Participantes
+                    div#pessoas
+
+            footer.boxMessage
+                div.container
+                    div.row
+                        div.col-md-9
+                            div.input-group
+                                input(type="text" class="form-control" id="mensagem")
+                                input(type="hidden" value="" id="id-user")
+                                span.input-group-btn
+                                    button(class="btn btn-primary" type="button" id="enviar_mensagem") >
+
+        script(src='/socket.io/socket.io.js')
+
+        script.
+
+            const $ = document.querySelector.bind(document);
+            const boxPessoas = $('#pessoas');
+            const boxDialogos = $('.dialogos');
+            const mensagem = $('#mensagem');
+            const inputHidden = document.querySelector('#id-user');
+        
+            const socket = io('/#{url}');  
+            const user = JSON.parse('!{JSON.stringify(data)}');  
+
+            function selectUser (event) {
+
+                const lis = document.querySelectorAll('.list-users li');                
+
+                lis.forEach(li => {                   
+                    if(this.id === li.id){
+
+                        let atrValue = (this.getAttribute("data-selected") == 'false');
+                        this.setAttribute("data-selected", atrValue);
+                       
+                        inputHidden.value = atrValue ? this.id : "";
+                       
+                        return;
+                    }
+                    li.setAttribute("data-selected", "false");
+                });             
+            }
+
+            socket.emit(
+                'updateUsers',
+                {
+                    nick: user.nick, 
+                }
+            );   
+
+            socket.on('updateListUsers', function(data){
+                boxPessoas.innerHTML = '';
+                const ul = document.createElement("ul");
+                ul.setAttribute('class', 'list-users');
+
+                for (let el in data) {  
+                    let li = document.createElement("li");
+                    li.innerHTML = data[el];
+                    li.setAttribute('id', el);
+                    li.setAttribute('data-selected', false);
+                    ul.appendChild(li);
+                    li.addEventListener('click', selectUser);
+                }
+
+                boxPessoas.appendChild(ul); 
+            });            
+
+            $('#enviar_mensagem')
+            .addEventListener('click', () => {
+                if(inputHidden.value === ""){
+                    socket.emit(
+                        'msgParaServidor',
+                        {
+                            apelido: user.nick, 
+                            mensagem: $('#mensagem').value,
+                        }
+                    );
+                }else{
+                    socket.emit('privateMessage', {id: inputHidden.value, apelido: user.nick, mensagem: $('#mensagem').value});
+                }
+
+                $('#mensagem').value = '';
+            });        
+
+            socket.on('msgParaCliente', function(data){
+                
+                var html = '';
+
+                html += data.private ? '<div class="dialogo private">' : '<div class="dialogo">';
+                html += '<h4>' + data.apelido + '</h4>';
+                html += '<p>' + data.mensagem + '</p>';
+                html += '</div>';
+
+                boxDialogos.innerHTML += html;
+
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+
+            socket.on('participantesParaCliente', function(data){
+
+                var html = '';
+
+                html += '<span class="participante">';
+                html +=  data.apelido;
+                html += '</span>';
+
+                boxPessoas.innerHTML = html;
+            });

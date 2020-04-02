@@ -1,0 +1,29 @@
+type Mutation {
+
+    saveCategory(
+        input: CategoryInput!
+    ): String
+
+    updateCategory(
+        filter: Int!
+        input: RoomInput!
+    ): String
+
+    deleteCategory(
+        id: Int!
+    ): Category
+
+    saveRoom(
+        input: RoomInput!
+    ): String
+
+    updateRoom(
+        filter: Int!
+        input: RoomInput!
+    ): String
+
+    deleteRoom(
+        id: Int!
+    ): Room
+    
+}
