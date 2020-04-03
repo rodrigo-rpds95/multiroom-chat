@@ -10,11 +10,11 @@ module.exports.home = function(application, res){
 
 			if(prop.cat_status == 1) {
 
-				if((groups[prop.cat_name]) == undefined) {	
-					groups[prop.cat_name] = [];
+				if((groups[prop.cat_url]) == undefined) {	
+					groups[prop.cat_url] = [];
 				}
 				  
-				groups[prop.cat_name].push(prop);
+				groups[prop.cat_url].push(prop);
 			}		
 		});
 

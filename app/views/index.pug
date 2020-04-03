@@ -3,12 +3,19 @@ html(lang="pt-br")
     head
         meta(charset="UTF-8")
         title Cadastro de clientes
+        link(rel='stylesheet' href='/css/bootstrap.min.css')
+        link(rel='stylesheet' href='/css/style.css')
     body
-        h1 Index
+        
+        main.container
+            h1.text-center.home Chat            
 
-        ul
-            each val, index in content
-                li= index
-                    ul
-                        each v, index in val
-                            li= v.room_name
+            ul.groupRooms
+                each valeus, cat in content
+                    li
+                        p 
+                            a(href=`/${cat}`)= valeus[0].cat_name
+                        ul
+                            each room in valeus
+                                li
+                                    a(href=`/${cat}/${room.room_url}`)=room.room_name
