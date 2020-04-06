@@ -6,6 +6,8 @@ module.exports.categoria = function(application, req, res){
 
 	category(url_cat).then(result => {
 
+		result = result || {};
+
 		if(Object.keys(result).length){
 
 			res.render('category',  {content: result});		
@@ -16,5 +18,7 @@ module.exports.categoria = function(application, req, res){
 			return;
 		}	
 
+	}, err => {
+		console.log(err);
 	});
 }

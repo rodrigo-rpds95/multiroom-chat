@@ -8,8 +8,25 @@ main {
 }
 
 .groupRooms {
+    list-style: none;
+    padding: 0;
     li {
-        
+        p {
+            a{
+                background: #058ED9;
+                color: #fff;
+                display: block;               
+            }
+        }
+    }    
+}
+
+.groupRooms li ul {
+    list-style: none;
+    li {
+        a{
+
+        }
     }
 }
 
