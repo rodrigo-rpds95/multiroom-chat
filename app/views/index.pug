@@ -10,12 +10,13 @@ html(lang="pt-br")
         main.container
             h1.text-center.home Chat            
            
-            each valeus, cat in content
-                ul.groupRooms
-                    li
-                        p 
-                            a(href=`/${cat}`)= valeus[0].cat_name
-                        ul
-                            each room in valeus
-                                li
-                                    a(href=`/${cat}/${room.room_url}`)= room.room_name
+            div.row
+                each valeus, cat in content
+                    ul.groupRooms.col-md-4
+                        li
+                            p 
+                                a(href=`/${cat}`)= valeus[0].cat_name
+                            ul
+                                each room in valeus
+                                    li
+                                        a(href=`/${cat}/${room.room_url}`)= room.room_name

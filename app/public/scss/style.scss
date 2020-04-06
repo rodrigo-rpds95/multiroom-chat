@@ -9,23 +9,33 @@ main {
 
 .groupRooms {
     list-style: none;
-    padding: 0;
+    margin: 0;
     li {
         p {
+            margin: 0;
             a{
                 background: #058ED9;
+                border-radius: 4px 4px 0 0;
                 color: #fff;
-                display: block;               
+                display: block;     
+                font-size: 18px;   
+                padding: 10px 15px;       
             }
         }
     }    
 }
 
 .groupRooms li ul {
+    border: 1px solid #ddd;
+    border-top: 0;
     list-style: none;
+    padding: 0;
     li {
         a{
-
+            border-bottom: 1px solid #ddd;
+            display: block;
+            font-size: 16px;
+            padding: 15px 10px;
         }
     }
 }
