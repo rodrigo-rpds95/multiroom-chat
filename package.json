@@ -1,14 +1,14 @@
 {
   "name": "multiroom-chat",
   "version": "1.0.0",
-  "description": "",
+  "description": "A multi-room chat application created with Node and WebSocket",
   "main": "index.js",
   "scripts": {
     "sass": "sass --watch app/public/scss:app/public/css --style compressed"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [multi-room chat, websocket, node],
+  "author": "Rodrigo Pereira dos Santos",
+  "license": "MIT",
   "dependencies": {
     "apollo-server-express": "^2.9.16",
     "body-parser": "^1.19.0",
