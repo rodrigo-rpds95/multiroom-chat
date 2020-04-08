@@ -6,7 +6,7 @@
   "scripts": {
     "sass": "sass --watch app/public/scss:app/public/css --style compressed"
   },
-  "keywords": [multi-room chat, websocket, node],
+  "keywords": ["multi-room chat", "websocket", "node"],
   "author": "Rodrigo Pereira dos Santos",
   "license": "MIT",
   "dependencies": {

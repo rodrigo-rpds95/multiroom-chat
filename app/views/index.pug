@@ -6,10 +6,12 @@ html(lang="pt-br")
         link(rel='stylesheet' href='/css/bootstrap.min.css')
         link(rel='stylesheet' href='/css/style.css')
     body
+
+        header
+            .container
+                h1 Chat   
         
-        main.container
-            h1.text-center.home Chat            
-           
+        main.container                    
             div.row
                 each valeus, cat in content
                     ul.groupRooms.col-md-4
