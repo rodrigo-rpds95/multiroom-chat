@@ -1,7 +1,7 @@
 html, body { height: 100%;}
 h1 { font-size: 22px; margin: 30px 0;}
 
-header.home {
+header.top {
     background: #058ed9;
     margin-bottom: 50px;
     h1 {
@@ -44,15 +44,6 @@ header.home {
     }
 }
 
-header.top {
-    background: #3a3636;
-    padding: 15px;
-    p {
-        color: #fff;
-        font-size: 22px;
-        margin: 0;
-    }
-}
 main.boxRoom {
     height: calc(100% - 100px);
     div.row {

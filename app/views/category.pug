@@ -3,6 +3,11 @@ html(lang="pt-br")
     head
         meta(charset="UTF-8")
         title= content.cat_name
+        link(rel='stylesheet' href='/css/bootstrap.min.css')
         link(rel='stylesheet' href='/css/style.css')
     body
-        h1= content.cat_name
+        header.top
+            .container
+                h1 Chat  
+
+        h2= content.cat_name
