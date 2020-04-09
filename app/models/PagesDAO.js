@@ -1,7 +1,11 @@
 const db = require('../../config/dbConnection.js');
 
 module.exports.getCategory = function(url){
-	return db('category').where({cat_url: url}).first();
+	return db('category').join(
+		'room', 
+		'category.cat_id',
+		'room.cat_id'
+	).where({cat_url: url}).select('cat_name', 'room_name', 'room_url');
 }
 
 module.exports.getRoom = function(url){
