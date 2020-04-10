@@ -5,7 +5,7 @@ module.exports.getCategory = function(url){
 		'room', 
 		'category.cat_id',
 		'room.cat_id'
-	).where({cat_url: url}).select('cat_name', 'room_name', 'room_url');
+	).where({cat_url: url}).select('cat_name', 'cat_url', 'room_name', 'room_url');
 }
 
 module.exports.getRoom = function(url){
