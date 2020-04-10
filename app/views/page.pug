@@ -3,15 +3,23 @@ html(lang="pt-br")
     head
         meta(charset="UTF-8")
         title= page_name
+        link(rel='stylesheet' href='/css/bootstrap.min.css')
         link(rel='stylesheet' href='/css/style.css')
     body
-        h1= page_name
+        header.top
+            .container
+                h1 Chat 
 
-        if validacao.length
-            ul
-                each val, index in validacao
-                    li= val.msg
+        main.container.page
 
-        form(action=url, method='post')
-            input(type="text" name="nick")
-            input(type="submit" value="Entrar")
+            if validacao.length
+                ul
+                    each val, index in validacao
+                        li= val.msg
+
+            div.boxCenter
+                h2= page_name
+                form(action=url, method='post')
+                    input(type="text" name="nick" placeholder="Type your name")
+                    br
+                    button(type="submit") Entrar
