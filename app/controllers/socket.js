@@ -22,14 +22,14 @@ function socket(app, chat_name) {
                     users
                 );
 
-                console.log(users);
+                // console.log(users);
 
             });
 
             socket.on('updateUsers', function(data){                   
                 users[socket.id] = data.nick; 
 
-                console.log(users);
+                // console.log(users);
 
                 nsp.emit(
                     'updateListUsers', 

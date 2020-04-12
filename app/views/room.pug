@@ -11,28 +11,28 @@ html(lang="pt-br")
             div.container
                 h1 Chat
 
-        main.container.boxRoom  
-
-            h1= room_name           
-
+        main.container.boxRoom                        
             div.row
-                section.col-md-9.boxChat                             
+                section.col-md-9.boxChat  
+                    h2= room_name                           
                     div.dialogos
+
+                    footer.boxMessage
+                        div.container
+                            div.row
+                                div.col-md-9
+                                    div.input-group
+                                        input(type="text" class="form-control" id="mensagem")
+                                        input(type="hidden" value="" id="id-user")
+                                        span.input-group-btn
+                                            button(class="btn btn-primary" type="button" id="enviar_mensagem") >
+
 
                 aside.col-md-3.boxUsers
                     h2 Participantes
                     div#pessoas
 
-            footer.boxMessage
-                div.container
-                    div.row
-                        div.col-md-9
-                            div.input-group
-                                input(type="text" class="form-control" id="mensagem")
-                                input(type="hidden" value="" id="id-user")
-                                span.input-group-btn
-                                    button(class="btn btn-primary" type="button" id="enviar_mensagem") >
-
+            
         script(src='/socket.io/socket.io.js')
 
         script.
