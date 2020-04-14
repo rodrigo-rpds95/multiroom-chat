@@ -7,6 +7,7 @@ header.top {
     margin-bottom: 50px;
     h1 {
         color: #fff;
+        float: left;
         font-size: 26px;
         margin: 15px 0;
     }
@@ -67,9 +68,12 @@ main.page {
 }
 
 main.boxRoom {
-    height: calc(100% - 100px);
+    height: calc(100% - 108px);
+    h2 {
+        margin-bottom: 15px;
+    }
     div.row {
-        height: calc(100% - 105px);
+        height: calc(100% - 110px);
         .boxChat {
             height: 100%;
         }
@@ -79,7 +83,7 @@ main.boxRoom {
 section.boxChat {
     .dialogos {
         border: 1px solid #eee;
-        height: calc(100% - 60px);
+        height: calc(100% - 48px);
         overflow: auto;
         .dialogo { 
             margin-bottom: 15px; 
@@ -168,4 +172,30 @@ footer.boxMessage {
         border: none;
         padding: 8px 30px;
     }
+}
+
+.users {
+    display: none;
+    float: right;
+    padding: 6px;
+    text-align: center;
+    .iconUsers {
+        color: #fff;       
+        font-size: 20px;    
+    }
+    p {
+        color: #fff;
+        margin-bottom: 0;
+    }
+}
+
+
+@media (max-width: 991px) {
+    aside.boxUsers {
+        display: none;
+    }
+    .users {
+        display: block;
+    }
+    .iconUsers { display: inline-block; }
 }

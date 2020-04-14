@@ -11,6 +11,10 @@ html(lang="pt-br")
             div.container
                 h1 Chat
 
+                div.users
+                    span.glyphicon.glyphicon-user.iconUsers
+                    p Users
+
         main.container.boxRoom                        
             div.row
                 section.col-md-9.boxChat  
@@ -116,7 +120,7 @@ html(lang="pt-br")
 
                 boxDialogos.innerHTML += html;
 
-                window.scrollTo(0, document.body.scrollHeight);
+                boxDialogos.scrollTo(0, boxDialogos.scrollHeight);
             });
 
             socket.on('participantesParaCliente', function(data){
