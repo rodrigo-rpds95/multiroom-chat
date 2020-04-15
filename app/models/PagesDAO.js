@@ -20,3 +20,7 @@ module.exports.getMenu = function(){
 	);
 }
 
+module.exports.getUser = function(user, password){
+	return db('admin').where({user, password}).first();
+}
+

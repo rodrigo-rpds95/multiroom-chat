@@ -5,9 +5,21 @@ module.exports = function(application){
     application.get('/', (req, res) => {
         application.app.controllers.index.home(application, res);
     });
+    
+    application.get('/logout', (req, res) => {
+        application.app.controllers.admin.logout(application, req, res);
+    });
 
     application.get('/admin', (req, res) => {
         application.app.controllers.admin.admin(application, req, res);
+    });
+
+    application.post('/admin', [
+        check('user').not().isEmpty().withMessage('type a name'),
+        check('password').not().isEmpty().withMessage('type a password'),
+        check('password').isLength({ min: 3, max: 20 }).withMessage('the password must be between 3 and 20 characters')
+    ], (req, res) => {
+        application.app.controllers.admin.login(application, req, res);
     });
 
     application.get('/:cat', (req, res) => {

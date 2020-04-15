@@ -1,0 +1,20 @@
+doctype html
+html(lang="pt-br")
+    head
+        meta(charset="UTF-8")
+        title Cadastro de clientes
+        link(rel='stylesheet' href='/css/bootstrap.min.css')
+        link(rel='stylesheet' href='/css/style.css')
+    body
+
+    main.container
+
+        if errors.length
+            ul
+                each val, index in errors
+                    li= val.msg
+
+        form(action="/admin" method="post")
+            input(type="text" placeholder="type the name" name="user" class="form-control")
+            input(type="password" placeholder="type the password" name="password" class="form-control")
+            button.btn.btn-success Login
