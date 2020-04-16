@@ -189,6 +189,43 @@ footer.boxMessage {
     }
 }
 
+.boxLogin {
+    background: #eee; 
+    left: 50%;   
+    margin: 0 auto;   
+    padding: 30px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    h1 {
+        margin: 0 0 30px;
+    }
+    .errors {
+        text-align: left;
+        ul {
+            list-style-position: inside;
+            padding: 0;
+            li {
+                color: #d43f3a;
+            }
+        }
+    }
+    form {        
+        input {
+            line-height: 30px;
+            margin-bottom: 15px;
+            padding: 0 12px;
+            width: 100%;
+        }
+        button {
+            padding: 8px 22px;
+        }
+    }
+}
+
+
 
 @media (max-width: 991px) {
     aside.boxUsers {
