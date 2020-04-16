@@ -1,4 +1,6 @@
 const { validationResult } = require('express-validator');
+const crypto = require("crypto");
+
 
 module.exports.admin = function(application, req, res){
 
@@ -12,11 +14,12 @@ module.exports.admin = function(application, req, res){
 module.exports.login = function(application, req, res){
 
 	const dataForm = req.body;
-	const getUser = application.app.models.PagesDAO.getUser;
-
+	const checkUser = application.app.models.PagesDAO.getUser;
 	const validate = validationResult(req);
 
-	getUser(dataForm.user, dataForm.password).then(result => {
+	dataForm.password = crypto.createHash('md5').update(dataForm.password).digest('hex');
+
+	checkUser(dataForm.user, dataForm.password).then(result => {
 
 		if (!validate.isEmpty() || result === undefined) {
 
@@ -27,9 +30,6 @@ module.exports.login = function(application, req, res){
 
 		}else{
 			req.session.authenticate = true;
-		}
-
-		if(req.session.authenticate){
 			res.render('admin', {errors: {}});
 		}	
 			
