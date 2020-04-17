@@ -5,11 +5,17 @@ h2 { margin: 0 0 30px;}
 header.top {
     background: #058ed9;
     margin-bottom: 50px;
+    padding: 15px 0;
     h1 {
         color: #fff;
         float: left;
         font-size: 26px;
-        margin: 15px 0;
+        margin: 0;
+    }
+    .disconnect {
+        color: #fff;
+        font-size: 20px;
+        float: right;
     }
 }
 
@@ -228,6 +234,11 @@ footer.boxMessage {
 
 
 @media (max-width: 991px) {
+    header.top {
+        .disconnect {
+            display: none;
+        }
+    }
     aside.boxUsers {
         display: none;
     }

@@ -2,8 +2,6 @@ function socket(app, chat_name) {
 
     const nsp = app.get('io').of(`/${chat_name}`);    
 
-    console.log(nsp);
-
     if(Object.keys(nsp.connected)[0] == undefined) {
 
         const users = {}; 

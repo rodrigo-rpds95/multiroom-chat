@@ -10,13 +10,13 @@ html(lang="pt-br")
         header.top
             div.container
                 h1 Chat
-                    a(href="/disconnect") Sair
+                a(href="/disconnect" class="disconnect") Desconectar
 
                 div.users
                     span.glyphicon.glyphicon-user.iconUsers
                     p Users
 
-        main.container.boxRoom                        
+        main.container.boxRoom              
             div.row
                 section.col-md-9.boxChat  
                     h2= room_name                           
