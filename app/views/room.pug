@@ -10,6 +10,7 @@ html(lang="pt-br")
         header.top
             div.container
                 h1 Chat
+                    a(href="/disconnect") Sair
 
                 div.users
                     span.glyphicon.glyphicon-user.iconUsers
@@ -68,12 +69,13 @@ html(lang="pt-br")
                 });             
             }
 
+            
             socket.emit(
                 'updateUsers',
                 {
                     nick: user.nick, 
                 }
-            );   
+            ); 
 
             socket.on('updateListUsers', function(data){
                 boxPessoas.innerHTML = '';

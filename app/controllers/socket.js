@@ -1,20 +1,22 @@
 function socket(app, chat_name) {
 
-    const nsp = app.get('io').of(`/${chat_name}`);
+    const nsp = app.get('io').of(`/${chat_name}`);    
+
+    console.log(nsp);
 
     if(Object.keys(nsp.connected)[0] == undefined) {
 
         const users = {}; 
         
-        nsp.on('connection', (socket) => {
+        nsp.on('connection', (socket) => {           
 
             socket.on('privateMessage', function(data){
                 socket.broadcast.to(data.id).emit('msgParaCliente', {apelido: data.apelido, mensagem: data.mensagem, private: true});
                 socket.emit('msgParaCliente', {apelido: data.apelido, mensagem: data.mensagem, private: true});
             });
                 
-            socket.on('disconnect', () => {
-                console.log('Usuário desconectou');
+            socket.on('disconnect', () => {                
+
                 delete users[socket.id];
 
                 nsp.emit(
@@ -22,14 +24,15 @@ function socket(app, chat_name) {
                     users
                 );
 
-                // console.log(users);
+                console.log('Desconectou', users);
 
             });
 
-            socket.on('updateUsers', function(data){                   
+            socket.on('updateUsers', function(data){
+            
                 users[socket.id] = data.nick; 
 
-                // console.log(users);
+                console.log('Atualizou', users);
 
                 nsp.emit(
                     'updateListUsers', 

@@ -47,3 +47,17 @@ module.exports.room = function(application, req, res){
 		res.render('room',  {room_name: result.room_name, url: url_room, data: dadosForm});
 	});
 };
+
+module.exports.disconnect = function(application, req, res){
+	
+	const url = req.headers.referer;
+	var pathname = new URL(url).pathname;
+	const url_room = req.params.room;
+	const room_chat = application.app.controllers.socket(application, url_room);
+
+	room_chat.emit(
+		'disconnect',
+	);
+
+	res.redirect(pathname);
+}
