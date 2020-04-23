@@ -166,6 +166,18 @@ footer.boxMessage {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
+    .listErrors {
+        text-align: left;
+        list-style: none;
+        padding: 0;
+        li {
+            background: #f2dede;
+            border: 1px solid #ebccd1;
+            color: #a94442;
+            margin-bottom: 5px;
+            padding: 5px 10px;
+        }
+    }
     input {
         font-size: 16px;
         line-height: 30px;

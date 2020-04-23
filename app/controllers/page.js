@@ -24,7 +24,8 @@ module.exports.page = function(application, req, res){
 
 module.exports.room = function(application, req, res){
 
-	const url_room = req.params.room;
+	const url_cat = req.params.cat;
+    const url_room = req.params.room;
 	const errors = validationResult(req);
 	const dadosForm = req.body;
 
@@ -33,7 +34,7 @@ module.exports.room = function(application, req, res){
 	room(url_room).then(result => {
 
 		if (!errors.isEmpty()) {
-			res.render('page', {content: result[0], validacao: errors.errors});
+			res.render('page', {page_name: result.room_name, url: `/${url_cat}/${url_room}`, validacao: errors.errors});
 			return;
 		}
 

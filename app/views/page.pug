@@ -10,15 +10,16 @@ html(lang="pt-br")
             .container
                 h1 Chat 
 
-        main.container.page
-
-            if validacao.length
-                ul
-                    each val, index in validacao
-                        li= val.msg
+        main.container.page           
 
             div.boxCenter
                 h2= page_name
+
+                if validacao.length
+                    ul.listErrors
+                        each val, index in validacao
+                            li= val.msg
+
                 form(action=url, method='post')
                     input(type="text" name="nick" placeholder="Type your name")
                     br
