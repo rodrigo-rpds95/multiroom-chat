@@ -9,6 +9,8 @@ module.exports.page = function(application, req, res){
 
 	page(url_room).then(result => {
 
+		result = result || {};
+
 		if(Object.keys(result).length){
 
 			res.render('page',  {page_name: result.room_name, url: `/${url_cat}/${url_room}`, validacao: {}});
