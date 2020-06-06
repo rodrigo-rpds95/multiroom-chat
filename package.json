@@ -14,7 +14,7 @@
   "author": "Rodrigo Pereira dos Santos",
   "license": "MIT",
   "dependencies": {
-    "apollo-server-express": "^2.9.16",
+    "apollo-server-express": "^2.14.2",
     "body-parser": "^1.19.0",
     "consign": "^0.1.6",
     "express": "^4.17.1",
